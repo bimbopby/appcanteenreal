@@ -11,34 +11,24 @@ import java.io.Serializable;
  *
  * @author Administrator
  */
-public class User implements Serializable{
-   
-    private String  id,username,password,user_type;
-   
-    private String name;
-    private int phone, gt,namsinh;
+public class User implements Serializable {
 
-   
+    private String  username, password, user_type;
+    private String name,gt;
+    private int id, phone, namsinh;
+
     public User() {
     }
 
-    public User(String id, String username, String password, String user_type, String name, int phone, int gt, int namsinh) {
-        this.id = id;
+    public User(String username, String password, String user_type, String name, String gt, int id, int phone, int namsinh) {
         this.username = username;
         this.password = password;
         this.user_type = user_type;
         this.name = name;
-        this.phone = phone;
         this.gt = gt;
-        this.namsinh = namsinh;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
         this.id = id;
+        this.phone = phone;
+        this.namsinh = namsinh;
     }
 
     public String getUsername() {
@@ -73,20 +63,28 @@ public class User implements Serializable{
         this.name = name;
     }
 
+    public String getGt() {
+        return gt;
+    }
+
+    public void setGt(String gt) {
+        this.gt = gt;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getPhone() {
         return phone;
     }
 
     public void setPhone(int phone) {
         this.phone = phone;
-    }
-
-    public int getGt() {
-        return gt;
-    }
-
-    public void setGt(int gt) {
-        this.gt = gt;
     }
 
     public int getNamsinh() {
@@ -96,7 +94,5 @@ public class User implements Serializable{
     public void setNamsinh(int namsinh) {
         this.namsinh = namsinh;
     }
-
-   
     
 }
