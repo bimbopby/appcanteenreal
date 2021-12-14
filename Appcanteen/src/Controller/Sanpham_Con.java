@@ -61,11 +61,12 @@ public class Sanpham_Con extends DBConfig{
         return false;
     }
     public SanPham detailSP(String sp_id){
-        String sql = "select name_pro, unit, price, supplier,quantity from product where id_pro=?"; 
+        String sql = "select id_pro,name_pro, unit, price, supplier,quantity from product where id_pro=?"; 
         SanPham s = null;
         try {
            
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, sp_id);  
             ResultSet rs = ps.executeQuery();
            
             while(rs.next()){
