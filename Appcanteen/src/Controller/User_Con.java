@@ -22,7 +22,7 @@ public class User_Con extends DBConfig{
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
 				user.setUsername(rs.getString("user_name"));
-				user.setUser_type(rs.getString("user_type"));
+				user.setUser_type(rs.getInt("user_type"));
                                 classify = 1;
 			}                                             
 		}catch(Exception e) {
