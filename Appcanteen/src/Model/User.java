@@ -14,13 +14,26 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private String  username, password, user_type;
-    private String name,gt;
-    private int id, phone, namsinh;
+    private String name;
+    private int id,gt, phone, namsinh;
+    private byte [] img;
 
+    public User(byte[] img) {
+        this.img = img;
+    }
+    
     public User() {
     }
 
-    public User(String username, String password, String user_type, String name, String gt, int id, int phone, int namsinh) {
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
+    }
+
+    public User(String username, String password, String user_type, String name, int gt, int id, int phone, int namsinh) {
         this.username = username;
         this.password = password;
         this.user_type = user_type;
@@ -63,11 +76,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getGt() {
+    public int getGt() {
         return gt;
     }
 
-    public void setGt(String gt) {
+    public void setGt(int gt) {
         this.gt = gt;
     }
 

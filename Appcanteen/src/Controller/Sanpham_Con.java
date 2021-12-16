@@ -23,9 +23,9 @@ public class Sanpham_Con extends DBConfig{
     public Sanpham_Con() {
         super();
     }
-    public void ShowListSP(){
+  //  public void ShowListSP(){ }
         
-    }
+   
     public boolean addSP(SanPham sp){
         String sql = "insert into product(id_pro, name_pro, unit, price, supplier,quantity)"+ "values (?,?,?,?,?,?)";
         try {

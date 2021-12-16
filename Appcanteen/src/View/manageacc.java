@@ -5,10 +5,19 @@
  */
 package View;
 
+import Controller.ImageCon;
 import Model.User;
-import Controller.manage_acc;
+
 import Model.SanPham;
+import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
+import java.awt.Image;
+import java.io.File;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,7 +30,8 @@ public class manageacc extends javax.swing.JFrame {
     private ArrayList<User> lstuser;
     private String[] cloumnHeader = new String[]{"ID", "Tên đăng nhập", "Họ và Tên", "Chức vụ", "SĐT", "Ngày sinh", "Giới tính"};
     private int selecIndex;
-    manage_acc manage_acc = new manage_acc();
+    private byte [] personalImg;
+  
 
     /**
      * Creates new form manageacc
@@ -29,20 +39,20 @@ public class manageacc extends javax.swing.JFrame {
     public manageacc() {
         initComponents();
         setLocationRelativeTo(null);
-        lstuser = new manage_acc().getListUser();
+       
         initTable();
     }
 
     private void initTable() {
-        model = new DefaultTableModel();
-        model.setColumnIdentifiers(cloumnHeader);
-
-        for (User s : lstuser) {
-            model.addRow(new Object[]{
-                s.getId(), s.getUsername(), s.getName(), s.getUser_type(), s.getPhone(), s.getNamsinh(), s.getGt()
-            });
-        }
-        list_manage_acc.setModel(model);
+//        model = new DefaultTableModel();
+//        model.setColumnIdentifiers(cloumnHeader);
+//
+//        for (User s : lstuser) {
+//            model.addRow(new Object[]{
+//                s.getId(), s.getUsername(), s.getName(), s.getUser_type(), s.getPhone(), s.getNamsinh(), s.getGt()
+//            });
+//        }
+//        list_manage_acc.setModel(model);
     }
 
     /**
@@ -85,9 +95,9 @@ public class manageacc extends javax.swing.JFrame {
         jRadioButton2 = new javax.swing.JRadioButton();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton3 = new javax.swing.JRadioButton();
-        jPanel5 = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
+        btnImg = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        lblImg = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         list_manage_acc = new javax.swing.JTable();
 
@@ -282,28 +292,19 @@ public class manageacc extends javax.swing.JFrame {
                 .addGap(33, 33, 33))
         );
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 183, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 170, Short.MAX_VALUE)
-        );
-
-        jButton6.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
-        jButton6.setText("Ảnh");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btnImg.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
+        btnImg.setText("Ảnh");
+        btnImg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btnImgActionPerformed(evt);
             }
         });
 
         jButton5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ảnh/exit (1).png"))); // NOI18N
         jButton5.setText("Đăng xuất");
+
+        lblImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ảnh/ic_client.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -314,17 +315,17 @@ public class manageacc extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(74, 74, 74)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(124, 124, 124)
-                        .addComponent(jButton6)))
-                .addContainerGap(88, Short.MAX_VALUE))
+                        .addComponent(btnImg))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
                 .addGap(30, 30, 30)
                 .addComponent(jButton5)
                 .addGap(35, 35, 35))
@@ -343,10 +344,10 @@ public class manageacc extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(jButton6)))
+                        .addGap(47, 47, 47)
+                        .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnImg)))
                 .addContainerGap())
         );
 
@@ -432,9 +433,42 @@ public class manageacc extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btnImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImgActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+        JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().createFileObject("D:\\code\\javacode\\New folder\\appcanteentrue\\Appcanteen\\src\\ảnh"));
+        fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    return f.getName().toLowerCase().endsWith(".jpg");
+                }
+            }
+
+            @Override
+            public String getDescription() {
+                return "ImageFile (*.jpg)";
+            }
+        });
+        if (fc.showOpenDialog(jPanel1)== JFileChooser.CANCEL_OPTION) {
+            return;
+        }
+        File file =  fc.getSelectedFile();
+         try{
+            ImageIcon icon = new ImageIcon(file.getPath());
+            Image img = ImageCon.resize(icon.getImage(), 140, 160);
+            ImageIcon resizeIcon = new ImageIcon(img);
+            lblImg.setIcon(resizeIcon);
+            personalImg = ImageCon.tobyteArr(img, "jpg");
+
+             }
+        catch(Exception e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "Lỗi");
+     }
+        
+    }//GEN-LAST:event_btnImgActionPerformed
 
     private void txtuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtuserActionPerformed
         // TODO add your handling code here:
@@ -480,6 +514,7 @@ public class manageacc extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnImg;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
@@ -491,7 +526,6 @@ public class manageacc extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -504,13 +538,13 @@ public class manageacc extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JLabel lblImg;
     private javax.swing.JTable list_manage_acc;
     private javax.swing.JRadioButton quanli;
     private javax.swing.JTextField txtname;
