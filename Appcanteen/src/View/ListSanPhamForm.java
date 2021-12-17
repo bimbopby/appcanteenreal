@@ -373,8 +373,8 @@ public class ListSanPhamForm extends javax.swing.JFrame {
         selecIndex = tblListSP.getSelectedRow();
         String masp = (String) model.getValueAt(selecIndex, 0);
         
-        for (SanPham s : lstsp) {
-            if (masp.equals(s.getProductID())) {
+     //   for (SanPham s : lstsp) {
+            if (selecIndex>=0) {
                SanPham sp = spCon.detailSP(masp);
                txtProID.setText(masp);
                txtProID.setEnabled(false);
@@ -384,11 +384,11 @@ public class ListSanPhamForm extends javax.swing.JFrame {
             txtPrice.setText(sp.getPrice()+"");
             txtNCC.setText(sp.getNCC());
             txtquantity.setText(sp.getSoluong()+""); 
-            break;
+           // break;
             }
         }
         
-        }
+       // }
     }//GEN-LAST:event_tblListSPMouseClicked
     
     

@@ -13,16 +13,27 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    private String  username, password, user_type;
-    private String name;
-    private int id,gt, phone, namsinh;
+
+    
     private byte [] img;
 
-    public User(byte[] img) {
-        this.img = img;
-    }
-    
+    private String  username, password;
+    private String name, namsinh;
+    private int id,gt,user_type, phone;
+
     public User() {
+    }
+
+    public User(byte[] img, String username, String password, String name, String namsinh, int id, int gt, int user_type, int phone) {
+        this.img = img;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.namsinh = namsinh;
+        this.id = id;
+        this.gt = gt;
+        this.user_type = user_type;
+        this.phone = phone;
     }
 
     public byte[] getImg() {
@@ -31,17 +42,6 @@ public class User implements Serializable {
 
     public void setImg(byte[] img) {
         this.img = img;
-    }
-
-    public User(String username, String password, String user_type, String name, int gt, int id, int phone, int namsinh) {
-        this.username = username;
-        this.password = password;
-        this.user_type = user_type;
-        this.name = name;
-        this.gt = gt;
-        this.id = id;
-        this.phone = phone;
-        this.namsinh = namsinh;
     }
 
     public String getUsername() {
@@ -60,14 +60,6 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getUser_type() {
-        return user_type;
-    }
-
-    public void setUser_type(String user_type) {
-        this.user_type = user_type;
-    }
-
     public String getName() {
         return name;
     }
@@ -76,12 +68,12 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public int getGt() {
-        return gt;
+    public String getNamsinh() {
+        return namsinh;
     }
 
-    public void setGt(int gt) {
-        this.gt = gt;
+    public void setNamsinh(String namsinh) {
+        this.namsinh = namsinh;
     }
 
     public int getId() {
@@ -92,6 +84,22 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    public int getGt() {
+        return gt;
+    }
+
+    public void setGt(int gt) {
+        this.gt = gt;
+    }
+
+    public int getUser_type() {
+        return user_type;
+    }
+
+    public void setUser_type(int user_type) {
+        this.user_type = user_type;
+    }
+
     public int getPhone() {
         return phone;
     }
@@ -100,12 +108,9 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public int getNamsinh() {
-        return namsinh;
-    }
 
-    public void setNamsinh(int namsinh) {
-        this.namsinh = namsinh;
-    }
+   
+    
+   
     
 }

@@ -27,60 +27,138 @@ public class NhanVien_Con extends DBConfig {
         super();
     }
      
-       public ArrayList<User> getListNV(){
+       public ArrayList<User> getListUser() {
         ArrayList<User> lst = new ArrayList<>();
-       String sql = "select * from product" ;
-        
+        String sql = "select * from user";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 User s = new User();
                 s.setId(rs.getInt("id"));
                 s.setUsername(rs.getString("user_name"));
                 s.setPassword(rs.getString("user_pass"));
-                s.setUser_type(rs.getString("user_type"));
-                s.setName(rs.getString("full_name"));
+                s.setName(rs.getString("name"));
+                s.setUser_type(rs.getInt("user_type"));
+                s.setGt(rs.getInt("gt"));
+                s.setNamsinh(rs.getString("namsinh"));
                 s.setPhone(rs.getInt("phone"));
-                s.setNamsinh(rs.getInt("yob"));
-                s.setGt(rs.getInt("sex"));
-                s.setImg(img);
+                Blob blob = rs.getBlob("img");
+                if (blob!= null) {
+                        s.setImg(blob.getBytes(1, (int)blob.length()));
+                } 
                 lst.add(s);
-
-                
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Sanpham_Con.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(User_Con.class.getName()).log(Level.SEVERE, null, ex);
         }
         return lst;
     }
        
        
-       public boolean addSP(User sp){
-        String sql = "insert into user(id, user_name, user_pass, user_type, full_name, phone, yob, sex, img)"+ "values (?,?,?,?,?,?,?,?,?)";
+         public boolean addUser(User user){
+        String sql = "insert into user(user_name, user_pass, name, user_type, gt,namsinh, phone,img)"+ "values (?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, sp.getId());
-            ps.setString(2, sp.getUsername());
-            ps.setString(3, sp.getPassword());
-            ps.setString(4, sp.getUser_type());
-            ps.setString(5, sp.getName());
-            ps.setInt(6, sp.getPhone());
-            ps.setInt(7, sp.getNamsinh());
-            ps.setInt(8, sp.getGt());
-            if (sp.getImg() != null) {
-                Blob hinh = new SerialBlob(sp.getImg());
-                ps.setBlob(9, hinh);
-            } else {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getName());
+            ps.setInt(4, user.getUser_type());
+            ps.setInt(5, user.getGt());
+            ps.setString(6, user.getNamsinh());
+            ps.setInt(7, user.getPhone());
+             
+            if (user.getImg()!=null) {
+                Blob hinh  = new SerialBlob(user.getImg());
+                ps.setBlob(8, hinh);
+            } else{
                 Blob hinh = null;
-                ps.setBlob(9, hinh);
+                ps.setBlob(8, hinh);
             }
-              
+            
             return ps.executeUpdate()>0;
             
         } catch (SQLException ex) {
-            Logger.getLogger(Sanpham_Con.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(User_Con.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+           public boolean XoaUser(String mauser){
+        String sql = "delete from user where id= ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, mauser);
+            return ps.executeUpdate() > 0;
+                      
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }    
+
+    public void setVisible(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    public boolean EditUser(User user){
+        String sql = "update user set user_name = ?, user_pass = ?, name = ?, user_type= ?, gt = ?,namsinh = ?, phone = ?, img=? where id=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getName());
+            ps.setInt(4, user.getUser_type());
+            ps.setInt(5, user.getGt());
+            ps.setString(6, user.getNamsinh());
+            ps.setInt(7, user.getPhone());
+            
+            if (user.getImg()!=null) {
+                Blob hinh  = new SerialBlob(user.getImg());
+                ps.setBlob(8, hinh);
+            } else{
+                Blob hinh = null;
+                ps.setBlob(8, hinh);
+            }
+            ps.setInt(9, user.getId());
+            
+            return ps.executeUpdate()>0;
+
+            
+        } catch (SQLException ex) {
+           Logger.getLogger(User_Con.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    
+    public User detailUser(String manv){
+        String sql = "select * from user where id =?";
+        User s= null;
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+          
+          
+            ps.setString(1, manv);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                 s = new User();
+                s.setId(rs.getInt("id"));
+                s.setUsername(rs.getString("user_name"));
+                s.setPassword(rs.getString("user_pass"));
+                s.setName(rs.getString("name"));
+                s.setUser_type(rs.getInt("user_type"));
+                s.setGt(rs.getInt("gt"));
+                s.setNamsinh(rs.getString("namsinh"));
+                s.setPhone(rs.getInt("phone"));
+                Blob blob = rs.getBlob("img");
+                if (blob!= null) {
+                        s.setImg(blob.getBytes(1, (int)blob.length()));
+                } 
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(User_Con.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return s;
     }
 }

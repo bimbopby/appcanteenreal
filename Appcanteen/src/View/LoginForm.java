@@ -192,18 +192,14 @@ public class LoginForm extends javax.swing.JFrame {
         uc.checkLogin(user);
       //  switch(x){
           //case 1:
-                if (user.getUser_type().equalsIgnoreCase("sysadmin")) {
+                if (user.getUser_type()== 1) {
                     new menu0().setVisible(true);
                     this.dispose();
                 }
-                else if(user.getUser_type().equalsIgnoreCase("manager")){
-                     new ManageAccountForm().setVisible(true);
+                else if(user.getUser_type()==0){
+                     new menu0().setVisible(true);
                      this.dispose();
-                }else if(user.getUser_type().equalsIgnoreCase("employee")){
-                     new ManageAccountForm().setVisible(true);
-                     this.dispose();
-                }
-            
+                }        
         
     }//GEN-LAST:event_btnLoginActionPerformed
 
