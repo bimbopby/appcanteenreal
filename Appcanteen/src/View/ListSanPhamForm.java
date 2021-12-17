@@ -14,40 +14,39 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-
 /**
  *
  * @author Administrator
  */
 public class ListSanPhamForm extends javax.swing.JFrame {
 
-  
-   private DefaultTableModel model;
-   private ArrayList<SanPham> lstsp;
-   private String [] cloumnHeader = new String[] {"Mã sản phẩm","Tên","Đơn vị","Giá","Nhà cung cấp","Số lượng"};
-   private int selecIndex;
+    private DefaultTableModel model;
+    private ArrayList<SanPham> lstsp;
+    private String[] cloumnHeader = new String[]{"Mã sản phẩm", "Tên", "Đơn vị", "Giá", "Nhà cung cấp", "Số lượng"};
+    private int selecIndex;
     Sanpham_Con spCon = new Sanpham_Con();
+
     public ListSanPhamForm() {
         initComponents();
         setLocationRelativeTo(null);
         lstsp = new Sanpham_Con().getListSanPham();
         initTable();
-        
+
         initClock();
         initUnit();
     }
-    private void initClock(){
+
+    private void initClock() {
         Clock cl = new Clock(lblClock);
         cl.start();
     }
 
-    private void initTable(){
+    private void initTable() {
         model = new DefaultTableModel();
-        model.setColumnIdentifiers(cloumnHeader);       
-       
-       
+        model.setColumnIdentifiers(cloumnHeader);
+
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -293,28 +292,29 @@ public class ListSanPhamForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-  
+
         //form nhap san pham cu
-        StringBuilder sb = new StringBuilder();        
+        StringBuilder sb = new StringBuilder();
         if (txtProID.getText().equals("")) {
             sb.append("Chưa nhập mã sản phẩm!!!\n");
             txtProID.setBackground(Color.yellow);
             txtProID.requestFocus();
+        } else {
+            txtProID.setBackground(Color.white);
         }
-        else txtProID.setBackground(Color.white);
-        
+
         if (txtNameSP.getText().equals("")) {
             sb.append("Chưa nhập tên sản phẩm!!!\n");
-            txtNameSP.setBackground(Color.yellow);     
+            txtNameSP.setBackground(Color.yellow);
             txtNameSP.requestFocus();
+        } else {
+            txtNameSP.setBackground(Color.white);
         }
-        else txtNameSP.setBackground(Color.white);
-        if (sb.length()>0)
-        {
-            JOptionPane.showMessageDialog(this, sb.toString(),"Lỗi",JOptionPane.ERROR_MESSAGE);
+        if (sb.length() > 0) {
+            JOptionPane.showMessageDialog(this, sb.toString(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         SanPham s = new SanPham();
         s.setProductID(txtProID.getText());
         s.setNameSP(txtNameSP.getText());
@@ -322,79 +322,79 @@ public class ListSanPhamForm extends javax.swing.JFrame {
         s.setPrice(Double.parseDouble(txtPrice.getText()));
         s.setNCC(txtNCC.getText());
         s.setSoluong(Integer.parseInt(txtquantity.getText()));
-        
+
         if (spCon.addSP(s)) {
             JOptionPane.showMessageDialog(rootPane, "thêm thành công");
             lstsp.add(s);
-        } else { JOptionPane.showMessageDialog(rootPane, "thất bại");
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "thất bại");
         }
         showResult();
     }//GEN-LAST:event_btnAddActionPerformed
-       
-    private void initUnit(){
-        String [] unit = new String[]{
-          "Chai","Cái","Kg"  
+
+    private void initUnit() {
+        String[] unit = new String[]{
+            "Chai", "Cái", "Kg"
         };
         DefaultComboBoxModel<String> cbxModel = new DefaultComboBoxModel<>(unit);
         cbxUnit.setModel(cbxModel);
-    } 
-        
+    }
+
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-      
+
         selecIndex = tblListSP.getSelectedRow();
-        if (lstsp.size()==0){
+        if (lstsp.size() == 0) {
             JOptionPane.showMessageDialog(rootPane, "chưa có sản phẩm");
-        }else if (selecIndex == -1) {
+        } else if (selecIndex == -1) {
             JOptionPane.showMessageDialog(rootPane, "chọn 1 sản phẩm để sửa");
-        }else{
-           // String id_pro =  (String) model.getValueAt(selecIndex, 0);
-           
+        } else {
+            // String id_pro =  (String) model.getValueAt(selecIndex, 0);
+
             SanPham s = new SanPham();
-        
+
             s.setProductID(txtProID.getText());
             s.setNameSP(txtNameSP.getText());
             s.setUnit(cbxUnit.getSelectedItem().toString());
             s.setPrice(Double.parseDouble(txtPrice.getText()));
             s.setNCC(txtNCC.getText());
             s.setSoluong(Integer.parseInt(txtquantity.getText()));
-            
-            
-        if (spCon.EditSP(s)) {
-            JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công");
-            this.dispose();
-            new ListSanPhamForm().setVisible(true);
-            
-        }                          
+
+            if (spCon.EditSP(s)) {
+                JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công");
+                this.dispose();
+                new ListSanPhamForm().setVisible(true);
+
+            }
     }//GEN-LAST:event_btnEditActionPerformed
     }
     private void tblListSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListSPMouseClicked
         // TODO add your handling code here:
         selecIndex = tblListSP.getSelectedRow();
         String masp = (String) model.getValueAt(selecIndex, 0);
-        
-     //   for (SanPham s : lstsp) {
-            if (selecIndex>=0) {
-               SanPham sp = spCon.detailSP(masp);
-               txtProID.setText(masp);
-               txtProID.setEnabled(false);
-            if (sp!=null) {
-            txtNameSP.setText(sp.getNameSP());
-            cbxUnit.setSelectedItem(sp.getUnit());
-            txtPrice.setText(sp.getPrice()+"");
-            txtNCC.setText(sp.getNCC());
-            txtquantity.setText(sp.getSoluong()+""); 
-           // break;
+
+        //   for (SanPham s : lstsp) {
+        if (selecIndex >= 0) {
+            SanPham sp = spCon.detailSP(masp);
+            txtProID.setText(masp);
+            txtProID.setEnabled(false);
+            if (sp != null) {
+                txtNameSP.setText(sp.getNameSP());
+                cbxUnit.setSelectedItem(sp.getUnit());
+                txtPrice.setText(sp.getPrice() + "");
+                txtNCC.setText(sp.getNCC());
+                txtquantity.setText(sp.getSoluong() + "");
+                // break;
             }
         }
-        
-       // }
+
+        // }
     }//GEN-LAST:event_tblListSPMouseClicked
-    
-    
+
+
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         showList();
-        
+
     }//GEN-LAST:event_formWindowOpened
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
@@ -402,7 +402,7 @@ public class ListSanPhamForm extends javax.swing.JFrame {
         txtProID.setText("");
         txtProID.setEnabled(true);
         txtNameSP.setText("");
-      //  cbxUnit.setSelectedItem(sp.getUnit());
+        //  cbxUnit.setSelectedItem(sp.getUnit());
         txtPrice.setText("");
         txtNCC.setText("");
         txtquantity.setText("");
@@ -410,46 +410,41 @@ public class ListSanPhamForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc chắn muốn xóa không !" ) == JOptionPane.YES_OPTION) {
+        if (JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc chắn muốn xóa không !") == JOptionPane.YES_OPTION) {
 
-                    selecIndex = tblListSP.getSelectedRow();
-                    String masp = ""+ tblListSP.getValueAt(selecIndex, 0);
-                    boolean isXoa = spCon.XoaSP(masp);
-                     if (isXoa) {
-                        JOptionPane.showMessageDialog(rootPane, "xóa thành công");
-                        this.dispose();
-                        new ListSanPhamForm().setVisible(true);
-                        } else {
-                            JOptionPane.showMessageDialog(rootPane, "xóa thất bại");
-                        }
+            selecIndex = tblListSP.getSelectedRow();
+            String masp = "" + tblListSP.getValueAt(selecIndex, 0);
+            boolean isXoa = spCon.XoaSP(masp);
+            if (isXoa) {
+                JOptionPane.showMessageDialog(rootPane, "xóa thành công");
+                this.dispose();
+                new ListSanPhamForm().setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "xóa thất bại");
+            }
 
-                }
-    }//GEN-LAST:event_btnDeleteActionPerformed
-    
-    
-    // list san pham
-    public void showList(){
-         for(SanPham s : lstsp)
-        {
-            model.addRow(new Object[]{
-                s.getProductID(),s.getNameSP(),s.getUnit(),s.getPrice(),s.getNCC(),s.getSoluong()
-        });
         }
-         tblListSP.setModel(model);
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    // list san pham
+    public void showList() {
+        for (SanPham s : lstsp) {
+            model.addRow(new Object[]{
+                s.getProductID(), s.getNameSP(), s.getUnit(), s.getPrice(), s.getNCC(), s.getSoluong()
+            });
+        }
+        tblListSP.setModel(model);
     }
- 
-    
 
     // +1 them san pham moi
-    public void showResult(){
-            SanPham s = lstsp.get(lstsp.size()-1);
-        
-            model.addRow(new Object[]{
-                s.getProductID(),s.getNameSP(),s.getUnit(),s.getPrice(),s.getNCC(),s.getSoluong()
+    public void showResult() {
+        SanPham s = lstsp.get(lstsp.size() - 1);
+
+        model.addRow(new Object[]{
+            s.getProductID(), s.getNameSP(), s.getUnit(), s.getPrice(), s.getNCC(), s.getSoluong()
         });
-            }
-   
-     
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

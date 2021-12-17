@@ -41,9 +41,6 @@ public class NhanVienForm extends javax.swing.JFrame {
     private byte [] personalImg;
     NhanVien_Con nvconn = new NhanVien_Con();
 
-    /**
-     * Creates new form manageacc
-     */
     public NhanVienForm() {
         initComponents();
         setLocationRelativeTo(null);
@@ -563,6 +560,7 @@ public class NhanVienForm extends javax.swing.JFrame {
         s.setNamsinh(txtngaysinh.getText());
         s.setPhone(Integer.parseInt(txtphone.getText()));
         s.setGt(nam.isSelected() ? 1 : 0);
+        
         s.setUser_type(quanli.isSelected() ? 1 : 0);
         s.setImg(personalImg);
         
@@ -572,7 +570,7 @@ public class NhanVienForm extends javax.swing.JFrame {
             this.dispose();
             new NhanVienForm().setVisible(true);
         } else {
-            //JOptionPane.showMessageDialog(rootPane, "thất bại");
+            JOptionPane.showMessageDialog(rootPane, "thất bại");
         }
         } 
     }//GEN-LAST:event_btnsuaActionPerformed
@@ -671,36 +669,35 @@ public class NhanVienForm extends javax.swing.JFrame {
     private void tblNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNVMouseClicked
         // TODO add your handling code here:
         selecIndex = tblNV.getSelectedRow();
-        try {
+        System.out.print("dcm");
+
            
             if (selecIndex >= 0) {
-                String manv = (String) model.getValueAt(selecIndex, 0);
+               String manv = (String) model.getValueAt(selecIndex, 0);
+               System.out.print("11111");
                 User s = nvconn.detailUser(manv);
                  if (manv!=null) {
                     txtuser.setText(s.getUsername());
                     txtname.setText(s.getName());
                     txtngaysinh.setText(s.getNamsinh());
-                    txtpw.setText(s.getPassword());
-                    txtphone.setText(s.getPhone()+"");
-                    quanli.setSelected(s.getUser_type()==1?true:false);
-                    nam.setSelected(s.getGt()==1?true:false);
-                     if (s.getImg()!=null) {
-                         Image img = ImageCon.createImgFromByteArray(s.getImg(), "jpg");
-                         lblImg.setIcon(new ImageIcon(img));
-                         personalImg = s.getImg();
-                     } else {
-                         personalImg = s.getImg();
-                         ImageIcon icon = new ImageIcon(getClass().getResource("/ảnh/ic_client.png"));
-                         lblImg.setIcon(icon);
-                     }
+//                    txtpw.setText(s.getPassword());
+//                    txtphone.setText(s.getPhone()+"");
+//                    quanli.setSelected((s.getUser_type()==1));
+//                    nam.setSelected((s.getGt()==1));
+//                     if (s.getImg()!=null) {
+//                         Image img = ImageCon.createImgFromByteArray(s.getImg(), "jpg");
+//                         lblImg.setIcon(new ImageIcon(img));
+//                         personalImg = s.getImg();
+//                     } else {
+//                         personalImg = s.getImg();
+//                         ImageIcon icon = new ImageIcon(getClass().getResource("/ảnh/ic_client.png"));
+//                         lblImg.setIcon(icon);
+//                     }
          
                 }
                  
             }
            
-        } catch (Exception e) {
-            
-        }
 
     }//GEN-LAST:event_tblNVMouseClicked
 
