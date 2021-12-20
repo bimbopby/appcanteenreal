@@ -24,7 +24,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.Color;
 import Controller.Clock;
 import Model.GetNV;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -38,16 +41,16 @@ public class NhanVienForm extends javax.swing.JFrame {
     private int selecIndex;
     private byte [] personalImg;
     NhanVien_Con nvconn = new NhanVien_Con();
-<<<<<<< HEAD
+
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * Creates new form manageacc
      */
     public NhanVienForm(GetNV   d) {
-=======
 
-    public NhanVienForm() {
->>>>>>> caaef3eb627d6d5fd01291c0829ee6275e4d5428
+
+   
+
         initComponents();
         setLocationRelativeTo(null);
         lstuser =  nvconn.getListUser();
@@ -694,7 +697,7 @@ public class NhanVienForm extends javax.swing.JFrame {
             if (selecIndex >= 0) {
                String manv = (String) model.getValueAt(selecIndex, 0);
                 User s = nvconn.detailUser(manv);
-<<<<<<< HEAD
+
                 
                 if (manv!=null) {
                   
@@ -702,32 +705,24 @@ public class NhanVienForm extends javax.swing.JFrame {
                     txtuser.setText((String) model.getValueAt(selecIndex, 1));
                     txtname.setText((String) model.getValueAt(selecIndex, 2));
                    
-                    txtngaysinh.setDate(sdf.parse((String) model.getValueAt(selecIndex, 5)));
+                   try {
+                       txtngaysinh.setDate(sdf.parse((String) model.getValueAt(selecIndex, 5)));
+                   } catch (ParseException ex) {
+                       Logger.getLogger(NhanVienForm.class.getName()).log(Level.SEVERE, null, ex);
+                   }
                     txtpw.setText(s.getPassword());
                     txtphone.setText(s.getPhone()+"");
                     quanli.setSelected(s.getUser_type()==1?true:false);
                     nhanvien.setSelected(s.getUser_type()==0?true:false);
                     nam.setSelected(s.getGt()==1?true:false);
                     nu.setSelected(s.getGt()==0?true:false);
-                     if (s.getImg()!=null) {
-=======
+                     
+
                 try {
                                 
-                    if (manv!=null) {
-
-                        txtId.setText(s.getId());
-                        txtuser.setText(s.getUsername());
-                        txtname.setText(s.getName());
-                        txtngaysinh.setText(s.getNamsinh());
-                        quanli.setSelected(s.getUser_type()==1?true:false);
-                        nhanvien.setSelected(s.getUser_type()==0?true:false);
-                        nam.setSelected(s.getGt()==1?true:false);
-                        nu.setSelected(s.getGt()==0?true:false);                   
-                        txtpw.setText(s.getPassword());
-                        txtphone.setText(s.getPhone()+"");
-                    }
+                    
                     if (s.getImg()!=null) {
->>>>>>> caaef3eb627d6d5fd01291c0829ee6275e4d5428
+
                          Image img = ImageCon.createImgFromByteArray(s.getImg(), "jpg");
                          lblImg.setIcon(new ImageIcon(img));
                          personalImg = s.getImg();
@@ -738,8 +733,8 @@ public class NhanVienForm extends javax.swing.JFrame {
                      }
                 } catch (Exception e) {
                 }
-            }
-        
+                }
+                }
     }//GEN-LAST:event_tblNVMouseClicked
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
