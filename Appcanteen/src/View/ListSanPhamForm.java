@@ -34,10 +34,6 @@ public class ListSanPhamForm extends javax.swing.JFrame {
     
     public ListSanPhamForm(GetNV d) {
  
-    
-
-   
- 
         initComponents();
         setLocationRelativeTo(null);
         lstsp = spCon.getListSanPham();
@@ -382,11 +378,6 @@ public class ListSanPhamForm extends javax.swing.JFrame {
         s.setNCC(txtNCC.getText());
         s.setSoluong(Integer.parseInt(txtquantity.getText()));
  
-    
-        
- 
- 
-
  
         if (spCon.addSP(s)) {
             JOptionPane.showMessageDialog(rootPane, "thêm thành công");
