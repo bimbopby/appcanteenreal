@@ -150,9 +150,9 @@ public class ListSanPhamForm extends javax.swing.JFrame {
             }
         });
 
-<<<<<<< HEAD
+
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ảnh/writing.png"))); // NOI18N
-=======
+
         btnEdit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ảnh/maintenance.png"))); // NOI18N
 >>>>>>> caaef3eb627d6d5fd01291c0829ee6275e4d5428
