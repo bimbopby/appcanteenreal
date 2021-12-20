@@ -38,11 +38,16 @@ public class NhanVienForm extends javax.swing.JFrame {
     private int selecIndex;
     private byte [] personalImg;
     NhanVien_Con nvconn = new NhanVien_Con();
+<<<<<<< HEAD
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * Creates new form manageacc
      */
     public NhanVienForm(GetNV   d) {
+=======
+
+    public NhanVienForm() {
+>>>>>>> caaef3eb627d6d5fd01291c0829ee6275e4d5428
         initComponents();
         setLocationRelativeTo(null);
         lstuser =  nvconn.getListUser();
@@ -406,7 +411,9 @@ public class NhanVienForm extends javax.swing.JFrame {
 
         btnReset.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnReset.setForeground(new java.awt.Color(255, 51, 51));
-        btnReset.setText("TẠO MỚI");
+        btnReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ảnh/loading.png"))); // NOI18N
+        btnReset.setText("CLEAR");
+        btnReset.setToolTipText("");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnResetActionPerformed(evt);
@@ -471,19 +478,24 @@ public class NhanVienForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 903, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 903, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+<<<<<<< HEAD
                 .addGap(0, 27, Short.MAX_VALUE))
+=======
+                .addGap(0, 29, Short.MAX_VALUE))
+>>>>>>> caaef3eb627d6d5fd01291c0829ee6275e4d5428
         );
 
         pack();
@@ -574,6 +586,7 @@ public class NhanVienForm extends javax.swing.JFrame {
         s.setNamsinh(date);
         s.setPhone(Integer.parseInt(txtphone.getText()));
         s.setGt(nam.isSelected() ? 1 : 0);
+        
         s.setUser_type(quanli.isSelected() ? 1 : 0);
         s.setImg(personalImg);
       
@@ -677,11 +690,11 @@ public class NhanVienForm extends javax.swing.JFrame {
     private void tblNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNVMouseClicked
         // TODO add your handling code here:
         selecIndex = tblNV.getSelectedRow();
-        try {
-           
+      
             if (selecIndex >= 0) {
-                String manv = (String) model.getValueAt(selecIndex, 0);
+               String manv = (String) model.getValueAt(selecIndex, 0);
                 User s = nvconn.detailUser(manv);
+<<<<<<< HEAD
                 
                 if (manv!=null) {
                   
@@ -697,6 +710,24 @@ public class NhanVienForm extends javax.swing.JFrame {
                     nam.setSelected(s.getGt()==1?true:false);
                     nu.setSelected(s.getGt()==0?true:false);
                      if (s.getImg()!=null) {
+=======
+                try {
+                                
+                    if (manv!=null) {
+
+                        txtId.setText(s.getId());
+                        txtuser.setText(s.getUsername());
+                        txtname.setText(s.getName());
+                        txtngaysinh.setText(s.getNamsinh());
+                        quanli.setSelected(s.getUser_type()==1?true:false);
+                        nhanvien.setSelected(s.getUser_type()==0?true:false);
+                        nam.setSelected(s.getGt()==1?true:false);
+                        nu.setSelected(s.getGt()==0?true:false);                   
+                        txtpw.setText(s.getPassword());
+                        txtphone.setText(s.getPhone()+"");
+                    }
+                    if (s.getImg()!=null) {
+>>>>>>> caaef3eb627d6d5fd01291c0829ee6275e4d5428
                          Image img = ImageCon.createImgFromByteArray(s.getImg(), "jpg");
                          lblImg.setIcon(new ImageIcon(img));
                          personalImg = s.getImg();
@@ -705,15 +736,10 @@ public class NhanVienForm extends javax.swing.JFrame {
                          ImageIcon icon = new ImageIcon(getClass().getResource("/ảnh/ic_client.png"));
                          lblImg.setIcon(icon);
                      }
-         
+                } catch (Exception e) {
                 }
-                 
             }
-           
-        } catch (Exception e) {
-            
-        }
-
+        
     }//GEN-LAST:event_tblNVMouseClicked
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed

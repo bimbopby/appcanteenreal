@@ -139,8 +139,7 @@ public class NhanVien_Con extends DBConfig {
           
             ps.setString(1, manv);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                
+            while (rs.next()) {               
                 s = new User();
                 s.setId(rs.getString("id"));
                 s.setUsername(rs.getString("user_name"));
