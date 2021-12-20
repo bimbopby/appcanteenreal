@@ -190,9 +190,9 @@
                   <Component id="btnDelete" min="-2" pref="104" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="btnClear" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="btnEdit" min="-2" pref="85" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="btnEdit" min="-2" pref="97" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btnAdd" min="-2" pref="115" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
@@ -227,6 +227,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnEdit">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/&#x1ea3;nh/writing.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="S&#x1eed;a"/>
           </Properties>
           <Events>
@@ -412,8 +415,14 @@
         <Component class="javax.swing.JTextField" name="txtNCC">
         </Component>
         <Component class="javax.swing.JTextField" name="txtPrice">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPriceKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtquantity">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtquantityKeyReleased"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

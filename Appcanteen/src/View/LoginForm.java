@@ -6,14 +6,9 @@
 package View;
 
 import Controller.User_Con;
+import Model.GetNV;
 import Model.User;
 import java.awt.Color;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,7 +22,7 @@ public class LoginForm extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
     }
-
+    User_Con uc = new User_Con();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,6 +41,7 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtPass = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
+        btnChangePass = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -93,6 +89,14 @@ public class LoginForm extends javax.swing.JFrame {
             }
         });
 
+        btnChangePass.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnChangePass.setText("Đổi mật khẩu");
+        btnChangePass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangePassActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -104,7 +108,8 @@ public class LoginForm extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0))
         );
         jPanel2Layout.setVerticalGroup(
@@ -120,6 +125,8 @@ public class LoginForm extends javax.swing.JFrame {
                 .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addComponent(btnChangePass, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(300, Short.MAX_VALUE))
         );
 
@@ -147,8 +154,7 @@ public class LoginForm extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -184,24 +190,43 @@ public class LoginForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, sb.toString());
             return;
         }
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
+     
         
-        User_Con uc = new User_Con();
-        uc.checkLogin(user);
-      //  switch(x){
-          //case 1:
+       
+        
+        
+        if(uc.checkLogin(username.trim(),password.trim()))
+        {       
+              
+                
+                User user = uc.Layin4(username,password);
+               
+                
+                GetNV detail = new GetNV(user.getUsername(),user.getName());
+               
+                
                 if (user.getUser_type()== 1) {
-                    new menu0().setVisible(true);
+                    new menu0(detail).setVisible(true);
                     this.dispose();
                 }
-                else if(user.getUser_type()==0){
-                     new menu0().setVisible(true);
+                else {
+                     new menu0(detail).setVisible(true);
                      this.dispose();
-                }        
+                }
+            }
+        else{
+               JOptionPane.showMessageDialog(rootPane, "Sai mật khẩu");
+            }
+        
         
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed
+        // TODO add your handling code here:
+        new ChangePass().setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_btnChangePassActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,12 +259,14 @@ public class LoginForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+               
                 new LoginForm().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnChangePass;
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

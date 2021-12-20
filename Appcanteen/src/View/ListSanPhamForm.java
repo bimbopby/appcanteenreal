@@ -7,8 +7,10 @@ package View;
 
 import Controller.Clock;
 import Controller.Sanpham_Con;
+import Model.GetNV;
 import Model.SanPham;
 import java.awt.Color;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -22,18 +24,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ListSanPhamForm extends javax.swing.JFrame {
 
-  
+  GetNV   detail;
    private DefaultTableModel model;
    private ArrayList<SanPham> lstsp;
    private String [] cloumnHeader = new String[] {"Mã sản phẩm","Tên","Đơn vị","Giá","Nhà cung cấp","Số lượng"};
    private int selecIndex;
     Sanpham_Con spCon = new Sanpham_Con();
-    public ListSanPhamForm() {
+    public ListSanPhamForm(GetNV d) {
         initComponents();
         setLocationRelativeTo(null);
-        lstsp = new Sanpham_Con().getListSanPham();
+        lstsp = spCon.getListSanPham();
         initTable();
-        
+        detail= new GetNV(d);
         initClock();
         initUnit();
     }
@@ -134,6 +136,7 @@ public class ListSanPhamForm extends javax.swing.JFrame {
             }
         });
 
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ảnh/writing.png"))); // NOI18N
         btnEdit.setText("Sửa");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,9 +170,9 @@ public class ListSanPhamForm extends javax.swing.JFrame {
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnClear)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
         );
@@ -206,6 +209,18 @@ public class ListSanPhamForm extends javax.swing.JFrame {
         jLabel7.setText("SỐ LƯỢNG:");
 
         cbxUnit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        txtPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPriceKeyReleased(evt);
+            }
+        });
+
+        txtquantity.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtquantityKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -328,26 +343,29 @@ public class ListSanPhamForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, sb.toString(),"Lỗi",JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+       
         SanPham s = new SanPham();
         s.setProductID(txtProID.getText());
         s.setNameSP(txtNameSP.getText());
         s.setUnit((String) cbxUnit.getSelectedItem());
-        s.setPrice(Double.parseDouble(txtPrice.getText()));
+        s.setPrice(txtPrice.getText()+" "+"VND");
         s.setNCC(txtNCC.getText());
         s.setSoluong(Integer.parseInt(txtquantity.getText()));
+    
         
+ 
         if (spCon.addSP(s)) {
             JOptionPane.showMessageDialog(rootPane, "thêm thành công");
             lstsp.add(s);
         } else { JOptionPane.showMessageDialog(rootPane, "thất bại");
         }
         showResult();
+        
     }//GEN-LAST:event_btnAddActionPerformed
        
     private void initUnit(){
         String [] unit = new String[]{
-          "Chai","Cái","Kg"  
+          "Chai","Cái","Kg","Lon" 
         };
         DefaultComboBoxModel<String> cbxModel = new DefaultComboBoxModel<>(unit);
         cbxUnit.setModel(cbxModel);
@@ -369,7 +387,7 @@ public class ListSanPhamForm extends javax.swing.JFrame {
             s.setProductID(txtProID.getText());
             s.setNameSP(txtNameSP.getText());
             s.setUnit(cbxUnit.getSelectedItem().toString());
-            s.setPrice(Double.parseDouble(txtPrice.getText()));
+            s.setPrice(txtPrice.getText()+" "+"VND");
             s.setNCC(txtNCC.getText());
             s.setSoluong(Integer.parseInt(txtquantity.getText()));
             
@@ -377,11 +395,25 @@ public class ListSanPhamForm extends javax.swing.JFrame {
         if (spCon.EditSP(s)) {
             JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công");
             this.dispose();
-            new ListSanPhamForm().setVisible(true);
+            new ListSanPhamForm(detail).setVisible(true);
             
-        }                          
+        } }                          
     }//GEN-LAST:event_btnEditActionPerformed
+   private double convertedToNumbers(String s){
+        String number="";
+        String []array=s.replace(","," ").split("\\s");
+        for(String i:array){
+            number=number.concat(i);
+        }
+        return Double.parseDouble(number);
     }
+    
+    private String cutChar(String arry){
+        return arry.replaceAll("\\D+","");
+    }
+    
+    
+    
     private void tblListSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListSPMouseClicked
         // TODO add your handling code here:
         selecIndex = tblListSP.getSelectedRow();
@@ -389,17 +421,33 @@ public class ListSanPhamForm extends javax.swing.JFrame {
         
      //   for (SanPham s : lstsp) {
             if (selecIndex>=0) {
-               SanPham sp = spCon.detailSP(masp);
+          //     SanPham sp = spCon.detailSP(masp);
                txtProID.setText(masp);
                txtProID.setEnabled(false);
-            if (sp!=null) {
-            txtNameSP.setText(sp.getNameSP());
-            cbxUnit.setSelectedItem(sp.getUnit());
-            txtPrice.setText(sp.getPrice()+"");
-            txtNCC.setText(sp.getNCC());
-            txtquantity.setText(sp.getSoluong()+""); 
+        //    if (sp!=null) {
+       //     txtNameSP.setText(sp.getNameSP());
+//            cbxUnit.setSelectedItem(sp.getUnit());
+   //txtPrice.setText(sp.getPrice()+"");
+//            txtNCC.setText(sp.getNCC());
+//            txtquantity.setText(sp.getSoluong()+""); 
            // break;
-            }
+           
+           txtNameSP.setText((String) model.getValueAt(selecIndex, 1));
+          
+           cbxUnit.setSelectedItem((String) model.getValueAt(selecIndex, 2));
+           
+           
+            String []s1=model.getValueAt(selecIndex,3).toString().split("\\s");
+            txtPrice.setText(s1[0]);
+       
+             
+            txtNCC.setText((String) model.getValueAt(selecIndex, 4));
+            
+            String []s=model.getValueAt(selecIndex,5).toString().trim().split("\\s");
+            txtquantity.setText(s[0]); 
+            
+            
+           // }
         }
         
        // }
@@ -421,6 +469,15 @@ public class ListSanPhamForm extends javax.swing.JFrame {
         txtNCC.setText("");
         txtquantity.setText("");
 
+
+//        for(SanPham s : lstsp)
+//        {
+//            System.out.println(s.getNameSP());
+
+//        }
+
+
+
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -432,7 +489,7 @@ public class ListSanPhamForm extends javax.swing.JFrame {
                      if (isXoa) {
                         JOptionPane.showMessageDialog(rootPane, "xóa thành công");
                         this.dispose();
-                        new ListSanPhamForm().setVisible(true);
+                        new ListSanPhamForm(detail).setVisible(true);
                         } else {
                             JOptionPane.showMessageDialog(rootPane, "xóa thất bại");
                         }
@@ -442,9 +499,27 @@ public class ListSanPhamForm extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-         new menu0().setVisible(true);
+        new menu0(detail).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void txtPriceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceKeyReleased
+        // TODO add your handling code here:
+         DecimalFormat formatter = new DecimalFormat("###,###,###");
+        
+        txtPrice.setText(cutChar(txtPrice.getText()));
+        if(txtPrice.getText().equals("")){
+            return;
+        }
+        else{
+            txtPrice.setText(formatter.format(convertedToNumbers(txtPrice.getText())));
+        }
+    }//GEN-LAST:event_txtPriceKeyReleased
+
+    private void txtquantityKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtquantityKeyReleased
+        // TODO add your handling code here:
+         txtquantity.setText(cutChar(txtquantity.getText()));
+    }//GEN-LAST:event_txtquantityKeyReleased
     
     
     // list san pham
@@ -497,7 +572,8 @@ public class ListSanPhamForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ListSanPhamForm().setVisible(true);
+                 GetNV   detail = new GetNV();
+                new ListSanPhamForm(detail).setVisible(true);
             }
         });
     }

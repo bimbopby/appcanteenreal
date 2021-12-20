@@ -33,7 +33,7 @@ public class Sanpham_Con extends DBConfig{
             ps.setString(1, sp.getProductID());
             ps.setString(2, sp.getNameSP());
             ps.setString(3, sp.getUnit());
-            ps.setDouble(4, sp.getPrice());
+            ps.setString(4, sp.getPrice());
             ps.setString(5, sp.getNCC());
             ps.setInt(6, sp.getSoluong());
             return ps.executeUpdate()>0;
@@ -50,7 +50,7 @@ public class Sanpham_Con extends DBConfig{
             ps.setString(6, sp.getProductID());
             ps.setString(1, sp.getNameSP());
             ps.setString(2, sp.getUnit());
-            ps.setDouble(3, sp.getPrice());
+            ps.setString(3, sp.getPrice());
             ps.setString(4, sp.getNCC());
             ps.setInt(5, sp.getSoluong());
             return ps.executeUpdate()>0;
@@ -60,8 +60,10 @@ public class Sanpham_Con extends DBConfig{
         }
         return false;
     }
+   
+    // Không dùng đến
     public SanPham detailSP(String sp_id){
-        String sql = "select id_pro,name_pro, unit, price, supplier,quantity from product where id_pro=?"; 
+        String sql = "select id_pro, name_pro, unit, price, supplier,quantity from product where id_pro=?"; 
         SanPham s = null;
         try {
            
@@ -74,7 +76,7 @@ public class Sanpham_Con extends DBConfig{
                 s.setProductID(rs.getString("id_pro"));
                 s.setNameSP(rs.getString("name_pro"));
                 s.setUnit(rs.getString("unit"));
-                s.setPrice(rs.getDouble("price"));
+                s.setPrice(rs.getString("price"));
                 s.setNCC(rs.getString("supplier"));
                 s.setSoluong(rs.getInt("quantity"));    
             }
@@ -83,6 +85,8 @@ public class Sanpham_Con extends DBConfig{
         }
       return s;
     }
+    
+    
     public ArrayList<SanPham> getListSanPham(){
         ArrayList<SanPham> lst = new ArrayList<>();
        String sql = "select * from product" ;
@@ -95,7 +99,7 @@ public class Sanpham_Con extends DBConfig{
                 s.setProductID(rs.getString("id_pro"));
                 s.setNameSP(rs.getString("name_pro"));
                 s.setUnit(rs.getString("unit"));
-                s.setPrice(rs.getDouble("price"));
+                s.setPrice(rs.getString("price"));
                 s.setNCC(rs.getString("supplier"));
                 s.setSoluong(rs.getInt("quantity"));
                 lst.add(s);
@@ -122,5 +126,20 @@ public class Sanpham_Con extends DBConfig{
         return false;
     }
      
-     
+    public void updateSL(SanPham sp){
+        String sql = "update product set quantity=? where id_pro=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+          
+            ps.setString(2, sp.getProductID());
+           
+            ps.setInt(1, sp.getSoluong());
+             ps.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Sanpham_Con.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
 }

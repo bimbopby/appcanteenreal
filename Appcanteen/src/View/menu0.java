@@ -5,6 +5,8 @@
  */
 package View;
 
+import Model.GetNV;
+
 /**
  *
  * @author admin
@@ -14,9 +16,11 @@ public class menu0 extends javax.swing.JFrame {
     /**
      * Creates new form menu0
      */
-    public menu0() {
+    GetNV    detail;
+    public menu0(GetNV d) {
         initComponents();
         setLocationRelativeTo(null);
+         detail=new GetNV(d);
     }
 
     /**
@@ -70,6 +74,11 @@ public class menu0 extends javax.swing.JFrame {
         jButton4.setText("Bán hàng");
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ảnh/ic_client.png"))); // NOI18N
@@ -144,17 +153,24 @@ public class menu0 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-                new ListSanPhamForm().setVisible(true);
+                new ListSanPhamForm(detail).setVisible(true);
                 this.dispose();// TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
 
-        new NhanVienForm().setVisible(true);
+        new NhanVienForm(detail).setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        System.out.println(detail.getName());
+        new SaleForm(detail).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,7 +202,8 @@ public class menu0 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new menu0().setVisible(true);
+                GetNV   detail = new GetNV();
+                new menu0(detail).setVisible(true);
             }
         });
     }

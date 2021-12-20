@@ -9,14 +9,10 @@ import Controller.ImageCon;
 import Model.User;
 
 
-import Model.SanPham;
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 import java.awt.Image;
 import java.io.File;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 
@@ -27,29 +23,32 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Color;
 import Controller.Clock;
+import Model.GetNV;
+import java.text.SimpleDateFormat;
 
 /**
  *
  * @author admin
  */
 public class NhanVienForm extends javax.swing.JFrame {
-
+    GetNV   detail;
     private DefaultTableModel model;
     private ArrayList<User> lstuser;
     private String[] cloumnHeader = new String[]{"ID", "Tên đăng nhập", "Họ và Tên", "Chức vụ", "SĐT", "Ngày sinh", "Giới tính"};
     private int selecIndex;
     private byte [] personalImg;
     NhanVien_Con nvconn = new NhanVien_Con();
-
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * Creates new form manageacc
      */
-    public NhanVienForm() {
+    public NhanVienForm(GetNV   d) {
         initComponents();
         setLocationRelativeTo(null);
         lstuser =  nvconn.getListUser();
         initTable();
         initClock();
+      detail= new   GetNV(d);  
     }
 
     private void initTable() {
@@ -86,6 +85,7 @@ public class NhanVienForm extends javax.swing.JFrame {
         buttonGroup4 = new javax.swing.ButtonGroup();
         buttonGroup5 = new javax.swing.ButtonGroup();
         buttonGroup6 = new javax.swing.ButtonGroup();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jPanel1 = new javax.swing.JPanel();
         btnthem = new javax.swing.JButton();
         btnsua = new javax.swing.JButton();
@@ -102,7 +102,6 @@ public class NhanVienForm extends javax.swing.JFrame {
         txtuser = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtphone = new javax.swing.JTextField();
-        txtngaysinh = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -113,6 +112,7 @@ public class NhanVienForm extends javax.swing.JFrame {
         nu = new javax.swing.JRadioButton();
         txtId = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
+        txtngaysinh = new com.toedter.calendar.JDateChooser();
         btnImg = new javax.swing.JButton();
         lblImg = new javax.swing.JLabel();
         lblClock = new javax.swing.JLabel();
@@ -209,8 +209,6 @@ public class NhanVienForm extends javax.swing.JFrame {
             }
         });
 
-        txtngaysinh.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setText("Ngày sinh:");
 
@@ -285,6 +283,11 @@ public class NhanVienForm extends javax.swing.JFrame {
                             .addComponent(jLabel10))
                         .addGap(56, 56, 56)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtname)
+                            .addComponent(txtuser)
+                            .addComponent(txtpw)
+                            .addComponent(txtphone)
+                            .addComponent(txtId)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(quanli)
@@ -294,12 +297,7 @@ public class NhanVienForm extends javax.swing.JFrame {
                                     .addComponent(nu)
                                     .addComponent(nhanvien))
                                 .addGap(61, 61, 61))
-                            .addComponent(txtname)
-                            .addComponent(txtuser)
-                            .addComponent(txtpw)
-                            .addComponent(txtphone)
-                            .addComponent(txtngaysinh)
-                            .addComponent(txtId))))
+                            .addComponent(txtngaysinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(39, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -331,9 +329,9 @@ public class NhanVienForm extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(txtphone, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtngaysinh, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-                    .addComponent(jLabel7))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(txtngaysinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -485,7 +483,7 @@ public class NhanVienForm extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 24, Short.MAX_VALUE))
+                .addGap(0, 27, Short.MAX_VALUE))
         );
 
         pack();
@@ -495,13 +493,13 @@ public class NhanVienForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtphoneActionPerformed
 
-//        public void showResult(){
-//            User s = lstuser.get(lstuser.size()-1);
-//        
-//            model.addRow(new Object[]{
-//                s.getId(), s.getUsername(), s.getName(), s.getUser_type(), s.getPhone(), s.getNamsinh(), s.getGt()
-//        });
-//            }
+        public void showResult(){
+            User s = lstuser.get(lstuser.size()-1);
+        
+            model.addRow(new Object[]{
+                s.getId(), s.getUsername(), s.getName(), s.getUser_type()==1 ? "Quản lý" : "Nhân Viên", s.getPhone(), s.getNamsinh(), s.getGt()==1 ? "Nam" : "Nữ"
+        });
+            }
     private void btnthemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnthemActionPerformed
         // TODO add your handling code here:
         String password = String.valueOf(txtpw.getPassword());
@@ -539,7 +537,8 @@ public class NhanVienForm extends javax.swing.JFrame {
         s.setUsername(txtuser.getText());
         s.setName(txtname.getText());
         s.setPassword(String.valueOf(txtpw.getPassword()));
-        s.setNamsinh(txtngaysinh.getText());
+        String date = sdf.format(txtngaysinh.getDate());
+        s.setNamsinh(date);
         s.setPhone(Integer.parseInt(txtphone.getText()));
         s.setGt(nam.isSelected() ? 1 : 0);
         s.setUser_type(quanli.isSelected() ? 1 : 0);
@@ -548,12 +547,11 @@ public class NhanVienForm extends javax.swing.JFrame {
         if ( nvconn.addUser(s)) {
             JOptionPane.showMessageDialog(rootPane, "thêm thành công");
             lstuser.add(s);
-            this.dispose();
-            new NhanVienForm().setVisible(true);
+            
         } else {
             JOptionPane.showMessageDialog(rootPane, "thất bại");
         }
-//        showResult();
+        showResult();
 
     }//GEN-LAST:event_btnthemActionPerformed
 
@@ -572,7 +570,8 @@ public class NhanVienForm extends javax.swing.JFrame {
         s.setUsername(txtuser.getText());
         s.setName(txtname.getText());
         s.setPassword(String.valueOf(txtpw.getPassword()));
-        s.setNamsinh(txtngaysinh.getText());
+        String date = sdf.format(txtngaysinh.getDate());
+        s.setNamsinh(date);
         s.setPhone(Integer.parseInt(txtphone.getText()));
         s.setGt(nam.isSelected() ? 1 : 0);
         s.setUser_type(quanli.isSelected() ? 1 : 0);
@@ -582,7 +581,7 @@ public class NhanVienForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công");
             
             this.dispose();
-            new NhanVienForm().setVisible(true);
+            new NhanVienForm(detail).setVisible(true);
         } else {
             JOptionPane.showMessageDialog(rootPane, "thất bại");
         }
@@ -591,7 +590,7 @@ public class NhanVienForm extends javax.swing.JFrame {
 
     private void quaylaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quaylaiActionPerformed
         // TODO add your handling code here:
-        new menu0().setVisible(true);
+        new menu0(detail).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_quaylaiActionPerformed
 
@@ -650,7 +649,7 @@ public class NhanVienForm extends javax.swing.JFrame {
             if (isXoa) {
                 JOptionPane.showMessageDialog(rootPane, "xóa thành công");
                 this.dispose();
-                new NhanVienForm().setVisible(true);
+                new NhanVienForm(detail).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(rootPane, "xóa thất bại");
             }
@@ -686,10 +685,11 @@ public class NhanVienForm extends javax.swing.JFrame {
                 
                 if (manv!=null) {
                   
-                    txtId.setText(s.getId());
-                    txtuser.setText(s.getUsername());
-                    txtname.setText(s.getName());
-                    txtngaysinh.setText(s.getNamsinh());
+                    txtId.setText(manv);
+                    txtuser.setText((String) model.getValueAt(selecIndex, 1));
+                    txtname.setText((String) model.getValueAt(selecIndex, 2));
+                   
+                    txtngaysinh.setDate(sdf.parse((String) model.getValueAt(selecIndex, 5)));
                     txtpw.setText(s.getPassword());
                     txtphone.setText(s.getPhone()+"");
                     quanli.setSelected(s.getUser_type()==1?true:false);
@@ -721,7 +721,9 @@ public class NhanVienForm extends javax.swing.JFrame {
         txtId.setText("");
         txtuser.setText("");
         txtpw.setText("");
-        txtngaysinh.setText("");
+        
+        txtngaysinh.setDate(null);
+        
         txtphone.setText("");
         txtname.setText("");
         personalImg = null;
@@ -760,7 +762,9 @@ public class NhanVienForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NhanVienForm().setVisible(true);
+              
+                GetNV   detail = new GetNV();
+                new NhanVienForm(detail).setVisible(true);
             }
         });
     }
@@ -777,6 +781,7 @@ public class NhanVienForm extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.ButtonGroup buttonGroup6;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -801,7 +806,7 @@ public class NhanVienForm extends javax.swing.JFrame {
     private javax.swing.JTable tblNV;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtname;
-    private javax.swing.JTextField txtngaysinh;
+    private com.toedter.calendar.JDateChooser txtngaysinh;
     private javax.swing.JTextField txtphone;
     private javax.swing.JPasswordField txtpw;
     private javax.swing.JTextField txtuser;

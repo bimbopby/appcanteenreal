@@ -14,14 +14,14 @@ import java.io.Serializable;
 public class SanPham implements Serializable{
     private String productID;
     private String nameSP,unit;
-    private double price;
-    private String NCC;
-    private int soluong;
+  
+    private String NCC,price;
+    private int soluong ;
 
     public SanPham() {
     }
 
-    public SanPham(String productID, String nameSP, String unit, double price, String NCC,int soluong) {
+    public SanPham(String productID, String nameSP, String unit, String price, String NCC,int soluong) {
         this.productID = productID;
         this.nameSP = nameSP;
         this.unit = unit;
@@ -63,11 +63,11 @@ public class SanPham implements Serializable{
         this.unit = unit;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
