@@ -494,11 +494,11 @@ public class NhanVienForm extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-<<<<<<< HEAD
+
                 .addGap(0, 27, Short.MAX_VALUE))
-=======
+
                 .addGap(0, 29, Short.MAX_VALUE))
->>>>>>> caaef3eb627d6d5fd01291c0829ee6275e4d5428
+
         );
 
         pack();
