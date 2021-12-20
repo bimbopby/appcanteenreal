@@ -155,7 +155,7 @@ public class ListSanPhamForm extends javax.swing.JFrame {
 
         btnEdit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ảnh/maintenance.png"))); // NOI18N
->>>>>>> caaef3eb627d6d5fd01291c0829ee6275e4d5428
+
         btnEdit.setText("Sửa");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
