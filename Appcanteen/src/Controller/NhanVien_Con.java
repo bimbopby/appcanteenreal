@@ -35,7 +35,7 @@ public class NhanVien_Con extends DBConfig {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 User s = new User();
-                s.setId(rs.getInt("id"));
+                s.setId(rs.getString("id"));
                 s.setUsername(rs.getString("user_name"));
                 s.setPassword(rs.getString("user_pass"));
                 s.setName(rs.getString("name"));
@@ -57,9 +57,10 @@ public class NhanVien_Con extends DBConfig {
        
        
          public boolean addUser(User user){
-        String sql = "insert into user(user_name, user_pass, name, user_type, gt,namsinh, phone,img)"+ "values (?,?,?,?,?,?,?,?)";
+        String sql = "insert into user(user_name, user_pass, name, user_type, gt,namsinh, phone,img,id)"+ "values (?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
+            
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getName());
@@ -75,6 +76,7 @@ public class NhanVien_Con extends DBConfig {
                 Blob hinh = null;
                 ps.setBlob(8, hinh);
             }
+            ps.setString(9, user.getId());
             
             return ps.executeUpdate()>0;
             
@@ -97,11 +99,8 @@ public class NhanVien_Con extends DBConfig {
         return false;
     }    
 
-    public void setVisible(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    public boolean EditUser(User user){
-        String sql = "update user set user_name = ?, user_pass = ?, name = ?, user_type= ?, gt = ?,namsinh = ?, phone = ?, img=? where id=?";
+        public boolean EditUser(User user){
+        String sql = "update user set user_name = ?, user_pass = ?, name = ?, user_type= ?, gt = ?,namsinh = ?, phone = ?, img=? where id = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user.getUsername());
@@ -119,7 +118,7 @@ public class NhanVien_Con extends DBConfig {
                 Blob hinh = null;
                 ps.setBlob(8, hinh);
             }
-            ps.setInt(9, user.getId());
+            ps.setString(9, user.getId());
             
             return ps.executeUpdate()>0;
 
@@ -140,9 +139,9 @@ public class NhanVien_Con extends DBConfig {
           
             ps.setString(1, manv);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                 s = new User();
-                s.setId(rs.getInt("id"));
+            while (rs.next()) {               
+                s = new User();
+                s.setId(rs.getString("id"));
                 s.setUsername(rs.getString("user_name"));
                 s.setPassword(rs.getString("user_pass"));
                 s.setName(rs.getString("name"));

@@ -18,13 +18,13 @@ public class User implements Serializable {
     private byte [] img;
 
     private String  username, password;
-    private String name, namsinh;
-    private int id,gt,user_type, phone;
+    private String id,name, namsinh;
+    private int gt,user_type, phone;
 
     public User() {
     }
 
-    public User(byte[] img, String username, String password, String name, String namsinh, int id, int gt, int user_type, int phone) {
+    public User(byte[] img, String username, String password, String name, String namsinh, String id, int gt, int user_type, int phone) {
         this.img = img;
         this.username = username;
         this.password = password;
@@ -76,11 +76,11 @@ public class User implements Serializable {
         this.namsinh = namsinh;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
