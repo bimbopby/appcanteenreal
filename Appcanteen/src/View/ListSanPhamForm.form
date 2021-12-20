@@ -190,13 +190,12 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                   <Component id="btnClear" min="-2" max="-2" attributes="0"/>
-<<<<<<< HEAD
-=======
+
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="btnDelete" min="-2" pref="104" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   <Component id="btnEdit" min="-2" pref="108" max="-2" attributes="0"/>
->>>>>>> caaef3eb627d6d5fd01291c0829ee6275e4d5428
+
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnEdit" min="-2" pref="97" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
