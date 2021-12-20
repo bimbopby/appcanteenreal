@@ -497,7 +497,7 @@ public class NhanVienForm extends javax.swing.JFrame {
 
                 .addGap(0, 27, Short.MAX_VALUE))
 
-                .addGap(0, 29, Short.MAX_VALUE))
+            
 
         );
 
