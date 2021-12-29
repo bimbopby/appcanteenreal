@@ -562,11 +562,20 @@ public class NhanVienForm extends javax.swing.JFrame {
         if ( nvconn.addUser(s)) {
             JOptionPane.showMessageDialog(rootPane, "thêm thành công");
             lstuser.add(s);
-            
+            showResult();
+            txtId.setText("");
+            txtuser.setText("");
+            txtpw.setText("");     
+            txtngaysinh.setDate(null);        
+            txtphone.setText("");
+            txtname.setText("");
+            personalImg = null;
+            ImageIcon icon = new ImageIcon(getClass().getResource("/ảnh/ic_client.png"));
+            lblImg.setIcon(icon);
         } else {
             JOptionPane.showMessageDialog(rootPane, "thất bại");
         }
-        showResult();
+      
 
     }//GEN-LAST:event_btnthemActionPerformed
 
@@ -664,8 +673,7 @@ public class NhanVienForm extends javax.swing.JFrame {
             boolean isXoa = nvconn.XoaUser(mauser);
             if (isXoa) {
                 JOptionPane.showMessageDialog(rootPane, "xóa thành công");
-                this.dispose();
-                new NhanVienForm(detail).setVisible(true);
+                model.removeRow(selecIndex);
             } else {
                 JOptionPane.showMessageDialog(rootPane, "xóa thất bại");
             }
