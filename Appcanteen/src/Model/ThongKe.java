@@ -10,18 +10,30 @@ package Model;
  * @author Administrator
  */
 public class ThongKe {
-    private String Name,Date,Time,TotalMoney,Money,Surplus;
+    private String MaHD,Name,Date,Time,TotalMoney,Money,Surplus,pay_method;
+    
+    
+    
+    public ThongKe() {
+        }
 
-    public ThongKe(String Name, String Date, String Time, String TotalMoney, String Money, String Surplus) {
+    public ThongKe(String MaHD, String Name, String Date, String Time, String TotalMoney, String Money, String Surplus, String pay_method) {
+        this.MaHD = MaHD;
         this.Name = Name;
         this.Date = Date;
         this.Time = Time;
         this.TotalMoney = TotalMoney;
         this.Money = Money;
         this.Surplus = Surplus;
+        this.pay_method = pay_method;
     }
 
-    public ThongKe() {
+    public String getMaHD() {
+        return MaHD;
+    }
+
+    public void setMaHD(String MaHD) {
+        this.MaHD = MaHD;
     }
 
     public String getName() {
@@ -71,7 +83,20 @@ public class ThongKe {
     public void setSurplus(String Surplus) {
         this.Surplus = Surplus;
     }
+
+    public String getPay_method() {
+        return pay_method;
+    }
+
+    public void setPay_method(String pay_method) {
+        this.pay_method = pay_method;
+    }
     
+    
+    
+   
+
+   
     
     
 

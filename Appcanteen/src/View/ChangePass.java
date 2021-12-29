@@ -23,7 +23,7 @@ public class ChangePass extends javax.swing.JFrame {
      User_Con uscon = new User_Con();
     public ChangePass() {
         initComponents();
-         setLocationRelativeTo(null);
+         setLocationRelativeTo(null); setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
        
         lblStatus.setForeground(Color.red);

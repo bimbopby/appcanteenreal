@@ -13,8 +13,7 @@ import java.io.Serializable;
  */
 public class SanPham implements Serializable{
     private String productID;
-    private String nameSP,unit;
-  
+    private String nameSP,unit; 
     private String NCC,price;
     private int soluong ;
 

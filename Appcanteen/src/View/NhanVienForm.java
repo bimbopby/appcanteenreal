@@ -52,7 +52,7 @@ public class NhanVienForm extends javax.swing.JFrame {
    
 
         initComponents();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); setResizable(false);
         lstuser =  nvconn.getListUser();
         initTable();
         initClock();

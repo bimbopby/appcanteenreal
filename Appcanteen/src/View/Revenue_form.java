@@ -52,28 +52,22 @@ public class Revenue_form extends javax.swing.JFrame {
     private void initTable() {
         model = new DefaultTableModel();
         model.setColumnIdentifiers(cloumnHeader);   
-        System.out.print("123");
+       table.setModel(model);
     }
     private void initClock(){
         Clock cl = new Clock(lblClock);
         cl.start();
     }
     private void showList(){
-//        for (Revenue s : lstRevenue) {;
-//            model.addRow(new Object[]{
-//                s.getName(), s.getDate(),s.getTime(),s.getTotal_monney(),s.getMonney(),s.getSurplus()
-//            });
-//        }
-        table.setModel(model);
-    }
-    private void showList1(){
-        for (Revenue s : lstRevenue_query) {
+        for (Revenue s : lstRevenue) {;
             model.addRow(new Object[]{
                 s.getName(), s.getDate(),s.getTime(),s.getTotal_monney(),s.getMonney(),s.getSurplus()
             });
         }
         table.setModel(model);
     }
+   
+ 
     public int countRow(String sql){
         int row = 0;
         try {

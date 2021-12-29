@@ -10,8 +10,12 @@ package Model;
  * @author Administrator
  */
 public class HoaDon {
-    private String MaSP,thanhtien;
+    private String MaSP,tensp,thanhtien;
     private int soluong;
+
+    public HoaDon(String tensp) {
+        this.tensp = tensp;
+    }
 
     public HoaDon( String MaSP, String thanhtien, int soluong) {
         
@@ -21,6 +25,14 @@ public class HoaDon {
     }
 
     public HoaDon() {
+    }
+
+    public String getTensp() {
+        return tensp;
+    }
+
+    public void setTensp(String tensp) {
+        this.tensp = tensp;
     }
 
   

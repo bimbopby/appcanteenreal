@@ -35,7 +35,9 @@ public class HoaDon_con extends DBConfig{
             while(rs.next()){
                 HoaDon s = new HoaDon();
              
+               
                 s.setMaSP(rs.getString("masanpham"));
+                s.setTensp(rs.getString("tensp"));
                 s.setThanhtien(rs.getString("thanhtien"));
             
                 s.setSoluong(rs.getInt("soluong"));
@@ -55,7 +57,7 @@ public class HoaDon_con extends DBConfig{
     
     public HoaDon checkHD(){
        
-        String sql = "select * from bill";
+        String sql = "select * from bill ";
         HoaDon s = null;
         try {
            
@@ -67,7 +69,9 @@ public class HoaDon_con extends DBConfig{
              
                 
                 s  = new HoaDon();
+              
                 s.setMaSP(rs.getString("masanpham"));
+                  s.setTensp(rs.getString("tensp"));
                 s.setSoluong(rs.getInt("soluong"));
                 s.setThanhtien(rs.getString("thanhtien"));
                
@@ -79,37 +83,61 @@ public class HoaDon_con extends DBConfig{
 
     }
     
-    public int countRow(){
+    public HoaDon detailHD(String masp){
        
-        String sql = "select count(*) from bill";
-        int row = 0;
+        String sql = "select * from bill where masanpham=?";
+        HoaDon s = null;
         try {
            
             PreparedStatement ps = con.prepareStatement(sql);
-         
+            ps.setString(1, masp);
             ResultSet rs = ps.executeQuery();
            
             while(rs.next()){
-                 row = rs.getInt("count(*)");
+             
+                
+                s  = new HoaDon();
+                s.setMaSP(rs.getString("masanpham"));
+                s.setTensp(rs.getString("tensp"));
+                s.setSoluong(rs.getInt("soluong"));
+                s.setThanhtien(rs.getString("thanhtien"));
                
             }
         } catch (SQLException ex) {
             Logger.getLogger(Sanpham_Con.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return row;
+      return s;
+
+    }
+    public void updateHD(HoaDon sp){
+        String sql = "update bill set soluong=?,thanhtien=? where masanpham=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+          
+            ps.setString(3, sp.getMaSP());
+            ps.setString(2, sp.getThanhtien());
+            ps.setInt(1, sp.getSoluong());
+             ps.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Sanpham_Con.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
     
     
     
     public boolean addHD(HoaDon sp){
-        String sql = "insert into bill(masanpham, soluong, thanhtien)"+ "values (?,?,?)";
+        String sql = "insert into bill(masanpham,soluong, thanhtien, tensp)"+ "values (?,?,?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
            
             ps.setString(1, sp.getMaSP());
+           
             ps.setInt(2, sp.getSoluong());
             ps.setString(3, sp.getThanhtien());
-        
+             ps.setString(4, sp.getTensp());
             return ps.executeUpdate()>0;
             
         } catch (SQLException ex) {
@@ -129,5 +157,25 @@ public class HoaDon_con extends DBConfig{
         } catch (SQLException ex) {
             Logger.getLogger(Sanpham_Con.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
+    }
+   
+    public void XoaHD(String masp){
+        String sql = "delete from bill where masanpham = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, masp);
+            
+            
+            
+            ps.executeUpdate() ;
+                      
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Sanpham_Con.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+   
+   
+   
 }

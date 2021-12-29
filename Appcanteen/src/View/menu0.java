@@ -19,7 +19,7 @@ public class menu0 extends javax.swing.JFrame {
     GetNV    detail;
     public menu0(GetNV d) {
         initComponents();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); setResizable(false);
          detail=new GetNV(d);
     }
 

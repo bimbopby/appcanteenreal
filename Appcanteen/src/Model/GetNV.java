@@ -15,7 +15,7 @@ public class GetNV {
     
     public GetNV(){
         user="dts1";
-        name="Điện Tử Số 1";
+        name="DEFAULT";
     }
     
     public GetNV(String us, String na){
