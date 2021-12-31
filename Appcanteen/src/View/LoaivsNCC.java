@@ -9,6 +9,7 @@ package View;
 import Controller.LoaiSP_Con;
 import Controller.NCC_Con;
 import Controller.ProType_con;
+import Model.GetNV;
 
 import Model.LoaiSP;
 import Model.NCC;
@@ -26,6 +27,8 @@ public class LoaivsNCC extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
+    
+    GetNV    detail;
     ProType_con lspconn = new ProType_con();
     NCC_Con ncccon = new NCC_Con();
     private ArrayList<NCC> lstncc = ncccon.getListNCC() ;
@@ -36,8 +39,9 @@ public class LoaivsNCC extends javax.swing.JFrame {
      String [] cloumnHeader1 = new String[] {"Mã ","Tên"};
      DefaultTableModel modle1 =new DefaultTableModel(cloumnHeader1,0);
        
-    public LoaivsNCC() {
+    public LoaivsNCC(GetNV d) {
         initComponents();
+     detail=new GetNV(d);
         initTableLoaiSP();
         initTableNCC();
         setLocationRelativeTo(null);
@@ -454,7 +458,7 @@ public class LoaivsNCC extends javax.swing.JFrame {
         if (ncccon.EditNCC(s)) {
             JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công");
              this.dispose();
-             new LoaivsNCC().setVisible(true);
+             new LoaivsNCC(detail).setVisible(true);
         } }           
     }//GEN-LAST:event_btnEditActionPerformed
 
@@ -538,7 +542,7 @@ public class LoaivsNCC extends javax.swing.JFrame {
         if (lspconn.EditLSP(s)) {
             JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công");
              this.dispose();
-             new LoaivsNCC().setVisible(true);
+             new LoaivsNCC(detail).setVisible(true);
         } }        
     }//GEN-LAST:event_btnEditLActionPerformed
 
@@ -584,7 +588,8 @@ public class LoaivsNCC extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoaivsNCC().setVisible(true);
+                   GetNV   detail = new GetNV();
+                new LoaivsNCC(detail).setVisible(true);
             }
         });
     }

@@ -9,15 +9,18 @@ import static Controller.DBConfig.con;
 import Model.Revenue_total;
 import Controller.Revenue_Con;
 import Controller.Sanpham_Con;
+import Controller.ThongKe_Con;
 import Model.GetNV;
 import Model.User;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import Model.Revenue;
+import Model.ThongKe;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,63 +31,68 @@ import java.util.logging.Logger;
  */
 public class Revenue_form extends javax.swing.JFrame {
     GetNV detail;
-    private String[] cloumnHeader = new String[]{"Tên hoá đơn", "Ngày bán", "Giờ bán", "Tổng tiền hoá đơn", "Tiền nhận của khách hoàng", "Tiền dư của khách hàng"};
+    private String[] cloumnHeader = new String[]{"Tên hoá đơn", "Nhân viên","Ngày", "Giờ", "Tổng tiền hoá đơn", "Tiền nhận của khách hoàng", "Tiền dư của khách hàng"};
     private DefaultTableModel model;
-    private ArrayList<Revenue> lstRevenue;
-    private ArrayList<Revenue> lstRevenue_query;
+   // private ArrayList<Revenue> lstRevenue;
+ //   private ArrayList<Revenue> lstRevenue_query;
+    private ArrayList<ThongKe> lstTK;
     private int selecIndex;
-    Revenue_Con nvconn = new Revenue_Con();
-
+   // Revenue_Con nvconn = new Revenue_Con();
+    ThongKe_Con tkcon = new  ThongKe_Con();
+     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * Creates new form Revenue
      */
-    
+   DecimalFormat formatter = new DecimalFormat("###,###,###");   
     public Revenue_form(GetNV d) {
         initComponents();
         setLocationRelativeTo(null);
-        lstRevenue =  nvconn.getListRevenue();
+       // lstRevenue =  nvconn.getListRevenue();
+        lstTK = tkcon.getListTK();
+        
         initTable();
         initClock();
         showList();
         detail = new GetNV(d);
+     
     }
     
     private void initTable() {
         model = new DefaultTableModel();
         model.setColumnIdentifiers(cloumnHeader);   
-       table.setModel(model);
+        table.setModel(model);
     }
     private void initClock(){
         Clock cl = new Clock(lblClock);
         cl.start();
     }
     private void showList(){
-        for (Revenue s : lstRevenue) {;
+          model.setRowCount(0);
+        for (ThongKe s : lstTK) {;
             model.addRow(new Object[]{
-                s.getName(), s.getDate(),s.getTime(),s.getTotal_monney(),s.getMonney(),s.getSurplus()
+                s.getMaHD(),s.getName(), s.getDate(),s.getTime(),s.getTotalMoney(),s.getMoney(),s.getSurplus()
             });
         }
         table.setModel(model);
+        label_tonghoadon.setText(tkcon.countRow()+"");
+        label_tien.setText(formatter.format(tkcon.tontien())+" "+"VNĐ");
     }
-   
- 
-    public int countRow(String sql){
-        int row = 0;
-        try {
-           
-            PreparedStatement ps = con.prepareStatement(sql);
-         
-            ResultSet rs = ps.executeQuery();
-           
-            while(rs.next()){
-                 row = rs.getInt("count(*)");
-               
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Sanpham_Con.class.getName()).log(Level.SEVERE, null, ex);
+    private void showListdate(){
+        model.setRowCount(0);
+        String d1 = sdf.format(jDateChooser1.getDate());
+        String d2 = sdf.format(jDateChooser2.getDate());
+        lstTK = tkcon.getListTKdate(d1, d2);
+        for (ThongKe s : lstTK) {;
+            model.addRow(new Object[]{
+                s.getMaHD(),s.getName(), s.getDate(),s.getTime(),s.getTotalMoney(),s.getMoney(),s.getSurplus()
+            });
         }
-        return row;
-    } 
+        table.setModel(model);
+        label_tien.setText(formatter.format(tkcon.tontiendate(d1, d2))+" "+"VNĐ");
+        label_tonghoadon.setText(model.getRowCount()+"");
+    }
+ 
+    
     private long convertedToNumbers(String s){
         String number="";
         String []array=s.replace(","," ").split("\\s");
@@ -93,26 +101,26 @@ public class Revenue_form extends javax.swing.JFrame {
         }
         return Long.parseLong(number);
     }
-    public int countMoney(String sql){
-        long tongTien = 0;
-        String dem;
-        try {
-           
-            PreparedStatement ps = con.prepareStatement(sql);
-         
-            ResultSet rs = ps.executeQuery();
-           
-            while(rs.next()){
-                String []s=rs.getString("total_money").trim().split("\\s");
-                System.out.println("V");
-                tongTien = convertedToNumbers(s[0])+tongTien;
-               
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Sanpham_Con.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return (int) tongTien;
-    }  
+//    public int countMoney(String sql){
+//        long tongTien = 0;
+//        String dem;
+//        try {
+//           
+//            PreparedStatement ps = con.prepareStatement(sql);
+//         
+//            ResultSet rs = ps.executeQuery();
+//           
+//            while(rs.next()){
+//                String []s=rs.getString("total_money").trim().split("\\s");
+//                System.out.println("V");
+//                tongTien = convertedToNumbers(s[0])+tongTien;
+//               
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Sanpham_Con.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return (int) tongTien;
+//    }  
         
 
 
@@ -140,6 +148,9 @@ public class Revenue_form extends javax.swing.JFrame {
         lblClock = new javax.swing.JLabel();
         table_revenue = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -212,10 +223,57 @@ public class Revenue_form extends javax.swing.JFrame {
         ));
         table_revenue.setViewportView(table);
 
+        jDateChooser2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jDateChooser2KeyReleased(evt);
+            }
+        });
+
+        jButton1.setText("Biểu đồ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addComponent(btn_quaylai))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(15, 15, 15)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
+                        .addComponent(btn_clear, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_thongke)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(lblClock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(34, 34, 34))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_xuatfile)
+                        .addContainerGap())))
+            .addComponent(table_revenue)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(jLabel4)
@@ -226,31 +284,6 @@ public class Revenue_form extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(label_tien, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(btn_quaylai))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(125, 125, 125)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(206, 206, 206)
-                        .addComponent(btn_clear, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_thongke))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblClock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(22, 22, 22))
-                    .addComponent(btn_xuatfile, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
-                .addContainerGap())
-            .addComponent(table_revenue)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,19 +295,23 @@ public class Revenue_form extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(lblClock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(42, 42, 42)
+                .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_xuatfile, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btn_thongke, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3))
-                                .addComponent(btn_clear, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(0, 0, Short.MAX_VALUE))))
-                .addGap(31, 31, 31)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGap(6, 6, 6))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btn_thongke, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_clear, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btn_xuatfile, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
@@ -311,6 +348,9 @@ public class Revenue_form extends javax.swing.JFrame {
 //        DecimalFormat formatter = new DecimalFormat("###,###,###");
 //        label_tonghoadon.setText((String.valueOf(row)));
 //        label_tien.setText(formatter.format(tongtien)+" "+"VND");
+          showListdate();
+          
+           
     }//GEN-LAST:event_btn_thongkeActionPerformed
 
     private void btn_quaylaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_quaylaiActionPerformed
@@ -323,8 +363,19 @@ public class Revenue_form extends javax.swing.JFrame {
         // TODO add your handling code here:
 //        DefaultTableModel model123 = (DefaultTableModel) table_revenue.
 //        table_revenue.
+        lstTK = tkcon.getListTK(); 
         showList();
     }//GEN-LAST:event_btn_clearActionPerformed
+
+    private void jDateChooser2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDateChooser2KeyReleased
+        // TODO add your handling code here:
+        showListdate();
+    }//GEN-LAST:event_jDateChooser2KeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new StaticForm().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -367,6 +418,9 @@ public class Revenue_form extends javax.swing.JFrame {
     private javax.swing.JButton btn_quaylai;
     private javax.swing.JButton btn_thongke;
     private javax.swing.JButton btn_xuatfile;
+    private javax.swing.JButton jButton1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

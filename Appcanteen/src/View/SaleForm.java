@@ -1089,6 +1089,11 @@ public class SaleForm extends javax.swing.JFrame {
         btnPrint.setEnabled(false);
         Disabled();
     }
+     
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */

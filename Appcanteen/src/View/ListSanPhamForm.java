@@ -394,11 +394,19 @@ public class ListSanPhamForm extends javax.swing.JFrame {
  
         if (spCon.addSP(s)) {
             JOptionPane.showMessageDialog(rootPane, "thêm thành công");
-            lstsp.add(s);
+            lstsp.add(s);  
+            showResult();
+            
+             txtProID.setText("");
+        txtProID.setEnabled(true);
+        txtNameSP.setText("");
+      
+        txtPrice.setText("");
+        txtquantity.setText("");
         } else {
             JOptionPane.showMessageDialog(rootPane, "thất bại");
         }
-        showResult();
+     
         
     }//GEN-LAST:event_btnAddActionPerformed
  
@@ -544,8 +552,7 @@ public class ListSanPhamForm extends javax.swing.JFrame {
                     boolean isXoa = spCon.XoaSP(masp);
                      if (isXoa) {
                         JOptionPane.showMessageDialog(rootPane, "xóa thành công");
-                        this.dispose();
-                        new ListSanPhamForm(detail).setVisible(true);
+                         model.removeRow(selecIndex);
                         } else {
                             JOptionPane.showMessageDialog(rootPane, "xóa thất bại");
                         }
